@@ -3,7 +3,7 @@ import sys
 
 # Lista de tokens
 tokens = (
-    # Palabras reservadas
+    # Palabras reservadas (Estructuras de control)
     'IF',
     'ELSIF',
     'ELSE',
@@ -13,33 +13,51 @@ tokens = (
     'FOREACH',
     'LAST',
     'NEXT',
+    'CONTINUE',
+    'RETURN',
+
+    #Palabras reservadas (Logica con cadenas)
     'SLESS',
-    'UNDEF',
     'SLESSEQUAL',
     'SGREATER',
     'SGREATEREQUAL',
-    'SEQUAL',
+    'SISEQUAL',
     'SDEQUAL',
     'SCOMP',
-    'REPEATER',
-    'UNLESS',
+
+    #Palabras reservadas (Declaraciones)
     'MY',
     'SUB',
-    'PRINT',
-    'RETURN',
-    'USE',
-    'LOCAL',
-    'DO',
-    'DELETE',
 
-    # Simbolos
+    #Palabras reservadas (Prefijos)
+    'UNDEF',
+    'UNLESS',
+    'USE',
+    'PACKAGE',
+    'DO',
+
+    #Palabras reservadas (Handlers)
+    'ARGV',
+    'ARGVOUT',
+    'STDERR',
+    'STDIN',
+    'STDOUT',
+
+    #Simbolos (Identificadores de variables)
     'DOLLAR',
     'AT',
     'PERCENT',
+
+    #Simbolos (Cadena)
     'SINGLEQUOTE',
     'DOUBLEQUOTE',
-    'BACKSLASH',
     'INVERTEDQUOTE',
+
+    #Simbolos (Expresiones regulares)
+    'BACKSLASH',
+
+    #Simbolos (Operadores)
+    'REPEATER',
     'PLUS',
     'PLUSPLUS',
     'MINUS',
@@ -55,9 +73,11 @@ tokens = (
     'DEQUAL',
     'DISTINT',
     'ISEQUAL',
-    'STARSHIP',
+    'COMP',
+
+    #Simbolos de sintaxis
     'ARROW',
-    'DOUBLEARROW',
+    'GROSSARROW',
     'SEMICOLON',
     'COMMA',
     'LPAREN',
@@ -67,28 +87,210 @@ tokens = (
     'LBLOCK',
     'RBLOCK',
     'COLON',
+    'DOUBLECOLON',
     'QUESTION',
     'AMPERSANT',
     'HASHTAG',
     'DOT',
     'DOUBLEDOT',
-    'REFERENCE',
+    'TRIPLEDOT',
     'UNDERSCORE',
 
-    # Otros
+    #Otros
     'ID',
     'NUMBER',
 )
 
-# Expresiones regulares para los tokens
+#Reglas (Estructuras de control)
+def t_IF(t):
+    r'if'
+    return t
+
+def t_ELSIF(t):
+    r'elsif'
+    return t
+
+def t_ELSE(t):
+    r'else'
+    return t
+
+def t_WHILE(t):
+    r'while'
+    return t
+
+def t_UNTIL(t):
+    r'until'
+    return t
+
+def t_FOR(t):
+    r'for'
+    return t
+
+def t_FOREACH(t):
+    r'foreach'
+    return t
+
+def t_LAST(t):
+    r'last'
+    return t
+
+def t_NEXT(t):
+    r'next'
+    return t
+
+def t_CONTINUE(t):
+    r'continue'
+    return t
+
+#Reglas (Logica con cadenas)
+def t_SLESS(t):
+    r'lt'
+    return t
+
+def t_SLESSEQUAL(t):
+    r'le'
+    return t
+
+def t_SGREATER(t):
+    r'gt'
+    return t
+
+def t_SGREATEREQUAL(t):
+    r'ge'
+    return t
+
+def t_SISEQUAL(t):
+    r'eq'
+    return t
+
+def t_SEQUAL(t):
+    r'ne'
+    return t
+
+def t_SCOMP(t):
+    r'cmp'
+    return t
+
+#Reglas (Declaraciones)
+def t_MY(t):
+    r'my'
+    return t
+
+def t_SUB(t):
+    r'sub'
+    return t
+
+#Reglas (Prefijos)
+def t_UNDEF(t):
+    r'undef'
+    return t
+
+def t_UNLESS(t):
+    r'unless'
+    return t
+
+def t_USE(t):
+    r'use'
+    return t
+
+def t_PACKAGE(t):
+    r'package'
+    return t
+
+def t_DO(t):
+    r'do'
+    return t
+
+#Reglas (Handlers)
+def t_ARGV(t):
+    r'ARGV'
+    return t
+
+def t_ARGVOUT(t):
+    r'ARGVOUT'
+    return t
+
+def t_STDERR(t):
+    r'STDERR'
+    return t
+
+def t_STDIN(t):
+    r'STDIN'
+    return t
+
+def t_STDOUT(t):
+    r'STDOUT'
+    return t
+
+#Reglas (Identificadores de variables)
+t_DOLLAR = r'\$'
+t_AT = r'@'
+t_PERCENT = r'%'
+
+#Reglas (Cadena)
+t_SINGLEQUOTE = r"'"
+t_DOUBLEQUOTE = r'"'
+T_INVERTEDQUOTE = r'`'
+
+#Reglas (Expresiones regulares)
+t_BACKSLASH = r'\\'
+
+#Reglas (Operadores)
+t_REPEATER = r'x'
 t_PLUS   = r'\+'
+
+def t_PLUSPLUS(t):
+    r'\+\+'
+    return t
+
 t_MINUS  = r'-'
+
+def t_MINUSMINUS(t):
+    r'--'
+    return t
+
 t_TIMES  = r'\*'
+
+def t_POW(t):
+    r'\*\*'
+    return t
+
 t_DIVIDE = r'/'
-t_EQUAL  = r'='
-t_DISTINT = r'!'
 t_LESS   = r'<'
+
+def t_LESSEQUAL(t):
+    r'<='
+    return t
+
 t_GREATER = r'>'
+
+def t_GREATEREQUAL(t):
+    r'>='
+    return t
+
+t_EQUAL  = r'='
+
+def t_DEQUAL(t):
+    r'!='
+    return t
+
+def t_ISEQUAL(t):
+    r'=='
+    return t
+
+def t_COMP(t):
+    r'<=>'
+    return t
+
+#Reglas (Sintaxis)
+def t_ARROW(t):
+    r'\->'
+    return t
+
+def t_GROSSARROW(t):
+    r'\=>'
+    return t
+
 t_SEMICOLON = ';'
 t_COMMA  = r','
 t_LPAREN = r'\('
@@ -98,97 +300,28 @@ t_RBRACKET = r'\]'
 t_LBLOCK   = r'{'
 t_RBLOCK   = r'}'
 t_COLON   = r':'
+
+def t_DOUBLECOLON(t):
+    r'::'
+    return t
+
+t_QUESTION = r'\?'
 t_AMPERSANT = r'\&'
 t_HASHTAG = r'\#'
 t_DOT = r'\.'
 
-def t_AUTO(t):
-    r'auto'
+def t_DOUBLEDOT(t):
+    r'\.{2}'
     return t
 
-def t_BREAK(t):
-    r'break'
+def t_TRIPLEDOT(t):
+    r'\.{3}'
     return t
 
-def t_CASE(t):
-    r'case'
-    return t
-
-def t_CHAR(t):
-    r'char'
-    return t
-
-def t_BOOLEAN(t):
-    r'boolean'
-    return t
-
-def t_INCLUDE(t):
-    r'include'
-    return t
-
-
-def t_DEFINE(t):
-    r'define'
-    return t
-
-def t_CONTINUE(t):
-    r'continue'
-    return t
-
-def t_DEFAULT(t):
-    r'default'
-    return t
-
-def t_DO(t):
-    r'do'
-    return t
-
-def t_DOUBLE(t):
-    r'double'
-    return t
-
-def t_ELSE(t):
-    r'else'
-    return t
-
-def t_FLOAT(t):
-    r'float'
-    return t
-
-def t_FOR(t):
-    r'for'
-    return t
-
-def t_IF(t):
-    r'if'
-    return t
-
-def t_INT(t):
-	r'int'
-	return t
-
-def t_SHORT(t):
-    r'short'
-    return t
-
-def t_LONG(t):
-    r'long'
-    return t
+t_UNDERSCORE = r'\_'
 
 def t_RETURN(t):
 	r'return'
-	return t
-
-def t_SWITCH(t):
-        r'switch'
-        return t
-
-def t_VOID(t):
-	r'void'
-	return t
-
-def t_WHILE(t):
-	r'while'
 	return t
 
 def t_NUMBER(t):
@@ -200,30 +333,6 @@ def t_ID(t):
     r'\w+(_\d\w)*'
     return t
 
-def t_LESSEQUAL(t):
-	r'<='
-	return t
-
-def t_GREATEREQUAL(t):
-	r'>='
-	return t
-
-def t_DEQUAL(t):
-	r'!='
-	return t
-
-def t_ISEQUAL(t):
-	r'=='
-	return t
-
-def t_MINUSMINUS(t):
-	r'--'
-	return t
-
-def t_PLUSPLUS(t):
-	r'\+\+'
-	return t
-
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
@@ -231,11 +340,7 @@ def t_newline(t):
 t_ignore = ' \t'
 
 def t_comments(t):
-    r'/\*(.|\n)*?\*/'
-    t.lexer.lineno += t.value.count('\n')
-
-def t_comments_C99(t):
-    r'//(.)*?\n'
+    r'\#(.)*\n'
     t.lexer.lineno += 1
 
 def t_error(t):
