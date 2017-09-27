@@ -1,63 +1,8 @@
 import ply.lex as lex
 import sys
 
-# Lista de tokens
-tokens = (
-    # Palabras reservadas (Estructuras de control)
-    'IF',
-    'ELSIF',
-    'ELSE',
-    'WHILE',
-    'UNTIL',
-    'FOR',
-    'FOREACH',
-    'LAST',
-    'NEXT',
-    'CONTINUE',
-    'RETURN',
-
-    #Palabras reservadas (Logica con cadenas)
-    'SLESS',
-    'SLESSEQUAL',
-    'SGREATER',
-    'SGREATEREQUAL',
-    'SISEQUAL',
-    'SDEQUAL',
-    'SCOMP',
-
-    #Palabras reservadas (Declaraciones)
-    'MY',
-    'SUB',
-
-    #Palabras reservadas (Prefijos)
-    'UNDEF',
-    'UNLESS',
-    'USE',
-    'PACKAGE',
-    'DO',
-
-    #Palabras reservadas (Handlers)
-    'ARGV',
-    'ARGVOUT',
-    'STDERR',
-    'STDIN',
-    'STDOUT',
-
-    #Simbolos (Identificadores de variables)
-    'DOLLAR',
-    'AT',
-    'PERCENT',
-
-    #Simbolos (Cadena)
-    'SINGLEQUOTE',
-    'DOUBLEQUOTE',
-    'INVERTEDQUOTE',
-
-    #Simbolos (Expresiones regulares)
-    'BACKSLASH',
-
+operators = (
     #Simbolos (Operadores)
-    'REPEATER',
     'PLUS',
     'PLUSPLUS',
     'MINUS',
@@ -75,6 +20,65 @@ tokens = (
     'ISEQUAL',
     'COMP',
 
+    #Palabras reservadas (Logica con cadenas)
+    'SLESS',
+    'SLESSEQUAL',
+    'SGREATER',
+    'SGREATEREQUAL',
+    'SISEQUAL',
+    'SDEQUAL',
+    'SCOMP'
+)
+
+identifiers = (
+    #Otros
+    'SCALAR_ID',
+    'ARRAY_ID',
+    'HASH_ID'
+)
+
+datatypes = (
+    'STRING',
+    'INTEGER',
+    'HEX',
+    'RANGE'
+)
+
+reserved = (
+    # Palabras reservadas (Estructuras de control)
+    'IF',
+    'ELSIF',
+    'ELSE',
+    'WHILE',
+    'UNTIL',
+    'FOR',
+    'FOREACH',
+    'LAST',
+    'NEXT',
+    'CONTINUE',
+    'RETURN',
+
+    #Palabras reservadas (Declaraciones)
+    'MY',
+    'SUB',
+
+    #Palabras reservadas (Prefijos)
+    'UNDEF',
+    'UNLESS',
+    'USE',
+    'PACKAGE',
+    'DO',
+
+    #Palabras reservadas (Handlers)
+    'ARGV',
+    'ARGVOUT',
+    'STDERR',
+    'STDIN',
+    'STDOUT'
+)
+
+# Lista de tokens
+tokens = operators + identifiers + datatypes + reserved + (
     #Simbolos de sintaxis
     'ARROW',
     'GROSSARROW',
@@ -95,11 +99,16 @@ tokens = (
     'DOUBLEDOT',
     'TRIPLEDOT',
     'UNDERSCORE',
-
-    #Otros
-    'ID',
-    'NUMBER',
+    'SUBROUTINE_ID'
 )
+
+def t_KEYWORD(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    if t.value not in tokens:
+        t.type = 'SUBROUTINE_ID'
+        return t
+    t.type = reserved.get(t.value,'STRING')
+    return t
 
 #Reglas (Estructuras de control)
 def t_IF(t):
@@ -222,21 +231,8 @@ def t_STDOUT(t):
     r'STDOUT'
     return t
 
-#Reglas (Identificadores de variables)
-t_DOLLAR = r'\$'
-t_AT = r'@'
-t_PERCENT = r'%'
-
-#Reglas (Cadena)
-t_SINGLEQUOTE = r"'"
-t_DOUBLEQUOTE = r'"'
-T_INVERTEDQUOTE = r'`'
-
-#Reglas (Expresiones regulares)
-t_BACKSLASH = r'\\'
 
 #Reglas (Operadores)
-t_REPEATER = r'x'
 t_PLUS   = r'\+'
 
 def t_PLUSPLUS(t):
@@ -324,14 +320,22 @@ def t_RETURN(t):
 	r'return'
 	return t
 
-def t_NUMBER(t):
-    r'\d+(\.\d+)?'
-    t.value = float(t.value)
+def t_SCALAR_ID(t):
+    r'\$[a-zA-Z0-9_]+'
     return t
 
-def t_ID(t):
-    r'\w+(_\d\w)*'
+def t_ARRAY_ID(t):
+    r'@[a-zA-Z0-9_]+'
     return t
+
+def t_HASH_ID(t):
+    r'%[a-zA-Z][a-zA-Z0-9_]*'
+    return t
+
+t_STRING = r'(\'([^\'])*\')|(\"([^\"])*\")'
+t_HEX = r'0[xX][0-9a-fA-F]+'
+t_INTEGER = r'0|([1-9][0-9]*)'
+t_RANGE = r'\.\.'
 
 def t_newline(t):
     r'\n+'
