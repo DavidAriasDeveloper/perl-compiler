@@ -34,15 +34,6 @@ operators = (
     'BIT_COMPLEMENT',
     'BIT_LEFT_SHIFT',
     'BIT_RIGHT_SHIFT',
-
-    #Palabras reservadas (Logica con cadenas)
-    'SLESS',
-    'SLESSEQUAL',
-    'SGREATER',
-    'SGREATEREQUAL',
-    'SISEQUAL',
-    'SDEQUAL',
-    'SCOMP'
 )
 
 identifiers = (
@@ -72,6 +63,13 @@ reserved = {
     'next':'NEXT',
     'continue':'CONTINUE',
     'return':'RETURN',
+    'lt' : 'LT',
+    'gt' : 'GT',
+    'le' : 'LE',
+    'ge' : 'GE',
+    'eq' : 'EQ',
+    'ne' : 'NE',
+    'cmp' : 'CMP',
 
     #Palabras reservadas (Declaraciones)
     'my':'MY',
@@ -82,6 +80,7 @@ reserved = {
     'unless':'UNLESS',
     'use':'USE',
     'package':'PACKAGE',
+    'struct' : 'STRUCT',
     'do':'DO'
 }
 
@@ -157,35 +156,6 @@ def t_NEXT(t):
 
 def t_CONTINUE(t):
     r'continue'
-    return t
-
-#Reglas (Logica con cadenas)
-def t_SLESS(t):
-    r'lt'
-    return t
-
-def t_SLESSEQUAL(t):
-    r'le'
-    return t
-
-def t_SGREATER(t):
-    r'gt'
-    return t
-
-def t_SGREATEREQUAL(t):
-    r'ge'
-    return t
-
-def t_SISEQUAL(t):
-    r'eq'
-    return t
-
-def t_SEQUAL(t):
-    r'ne'
-    return t
-
-def t_SCOMP(t):
-    r'cmp'
     return t
 
 #Reglas (Declaraciones)

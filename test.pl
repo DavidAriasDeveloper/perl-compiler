@@ -26,13 +26,29 @@ my($dna) = $ARGV[0];
 my($num_of_Gs) = countG ( $dna );
 
 # Report the result and exit.
-print "\nThe DNA $dna has $num_of_Gs G\'s in it!\n\n";
+print "\nThe DNA has Gs in it!\n\n";
 
 exit;
 
 ################################################################################
 # Subroutines for Example 6-3
 ################################################################################
+
+$saludo="hola";
+if ($saludo eq "hola")
+  {
+    print $saludo;
+  }
+
+for ($i=1; $i<=10; $i++)
+{
+  if ($i == 3)
+   {
+    next;
+   }
+  print "$i\n";
+
+}
 
 sub countG {
     # return a count of the number of G's in the argument $dna
@@ -44,7 +60,6 @@ sub countG {
 
     # Use the fourth method of counting nucleotides in DNA, as shown in
     # Chapter Four, "Motifs and Loops"
-    $count = ( $dna =~ tr/Gg//);
 
     return $count;
 }
