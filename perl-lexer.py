@@ -9,16 +9,31 @@ operators = (
     'MINUSMINUS',
     'TIMES',
     'POW',
+    'MODULUS',
     'DIVIDE',
     'LESS',
     'LESSEQUAL',
     'GREATER',
     'GREATEREQUAL',
-    'EQUAL',
+    'ASSIGN',
+    'PLUS_ASSIGN',
+    'MINUS_ASSIGN',
+    'MULTIPLY_ASSIGN',
+    'DIVIDE_ASSIGN',
+    'MOD_ASSIGN',
+    'EXPONENT_ASSIGN',
     'DEQUAL',
     'DISTINT',
     'ISEQUAL',
     'COMP',
+
+    'BIT_NOT',
+    'BIT_AND',
+    'BIT_OR',
+    'BIT_XOR',
+    'BIT_COMPLEMENT',
+    'BIT_LEFT_SHIFT',
+    'BIT_RIGHT_SHIFT',
 
     #Palabras reservadas (Logica con cadenas)
     'SLESS',
@@ -44,41 +59,34 @@ datatypes = (
     'RANGE'
 )
 
-reserved = (
+reserved = {
     # Palabras reservadas (Estructuras de control)
-    'IF',
-    'ELSIF',
-    'ELSE',
-    'WHILE',
-    'UNTIL',
-    'FOR',
-    'FOREACH',
-    'LAST',
-    'NEXT',
-    'CONTINUE',
-    'RETURN',
+    'if':'IF',
+    'elsif':'ELSIF',
+    'else':'ELSE',
+    'while':'WHILE',
+    'until':'UNTIL',
+    'for':'FOR',
+    'foreach':'FOREACH',
+    'last':'LAST',
+    'next':'NEXT',
+    'continue':'CONTINUE',
+    'return':'RETURN',
 
     #Palabras reservadas (Declaraciones)
-    'MY',
-    'SUB',
+    'my':'MY',
+    'sub':'SUB',
 
     #Palabras reservadas (Prefijos)
-    'UNDEF',
-    'UNLESS',
-    'USE',
-    'PACKAGE',
-    'DO',
-
-    #Palabras reservadas (Handlers)
-    'ARGV',
-    'ARGVOUT',
-    'STDERR',
-    'STDIN',
-    'STDOUT'
-)
+    'undef':'UNDEF',
+    'unless':'UNLESS',
+    'use':'USE',
+    'package':'PACKAGE',
+    'do':'DO'
+}
 
 # Lista de tokens
-tokens = operators + identifiers + datatypes + reserved + (
+tokens = operators + identifiers + datatypes + tuple(reserved.values()) + (
     #Simbolos de sintaxis
     'ARROW',
     'GROSSARROW',
@@ -104,7 +112,7 @@ tokens = operators + identifiers + datatypes + reserved + (
 
 def t_KEYWORD(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    if t.value not in tokens:
+    if t.value not in reserved:
         t.type = 'SUBROUTINE_ID'
         return t
     t.type = reserved.get(t.value,'STRING')
@@ -198,10 +206,6 @@ def t_UNLESS(t):
     r'unless'
     return t
 
-def t_USE(t):
-    r'use'
-    return t
-
 def t_PACKAGE(t):
     r'package'
     return t
@@ -209,28 +213,6 @@ def t_PACKAGE(t):
 def t_DO(t):
     r'do'
     return t
-
-#Reglas (Handlers)
-def t_ARGV(t):
-    r'ARGV'
-    return t
-
-def t_ARGVOUT(t):
-    r'ARGVOUT'
-    return t
-
-def t_STDERR(t):
-    r'STDERR'
-    return t
-
-def t_STDIN(t):
-    r'STDIN'
-    return t
-
-def t_STDOUT(t):
-    r'STDOUT'
-    return t
-
 
 #Reglas (Operadores)
 t_PLUS   = r'\+'
@@ -254,6 +236,8 @@ def t_POW(t):
 t_DIVIDE = r'/'
 t_LESS   = r'<'
 
+t_MODULUS = r'%'
+
 def t_LESSEQUAL(t):
     r'<='
     return t
@@ -264,7 +248,13 @@ def t_GREATEREQUAL(t):
     r'>='
     return t
 
-t_EQUAL  = r'='
+t_ASSIGN  = r'='
+t_PLUS_ASSIGN = r'\+='
+t_MINUS_ASSIGN = r'-='
+t_MULTIPLY_ASSIGN = r'\*='
+t_DIVIDE_ASSIGN = r'/='
+t_MOD_ASSIGN = r'%='
+t_EXPONENT_ASSIGN = r'\*\*='
 
 def t_DEQUAL(t):
     r'!='
@@ -277,6 +267,14 @@ def t_ISEQUAL(t):
 def t_COMP(t):
     r'<=>'
     return t
+
+t_BIT_NOT = r'!'
+t_BIT_AND = r'&'
+t_BIT_OR = r'\|'
+t_BIT_XOR = r'\^'
+t_BIT_COMPLEMENT = r'~'
+t_BIT_LEFT_SHIFT = r'<<'
+t_BIT_RIGHT_SHIFT = r'>>'
 
 #Reglas (Sintaxis)
 def t_ARROW(t):
