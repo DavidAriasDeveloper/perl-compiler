@@ -4,9 +4,9 @@ import sys
 operators = (
     #Simbolos (Operadores)
     'PLUS',
-    'PLUSPLUS',
+    'INCREASE',
     'MINUS',
-    'MINUSMINUS',
+    'DECREASE',
     'TIMES',
     'POW',
     'MODULUS',
@@ -15,18 +15,21 @@ operators = (
     'LESSEQUAL',
     'GREATER',
     'GREATEREQUAL',
+    'NOTEQUAL',
+    'ISEQUAL',
+    'DISTINT',
+    'COMP',
+
+    #Simbolos (Asignaciones)
     'ASSIGN',
     'PLUS_ASSIGN',
     'MINUS_ASSIGN',
     'MULTIPLY_ASSIGN',
     'DIVIDE_ASSIGN',
     'MOD_ASSIGN',
-    'EXPONENT_ASSIGN',
-    'DEQUAL',
-    'DISTINT',
-    'ISEQUAL',
-    'COMP',
+    'POW_ASSIGN',
 
+    #Simbolos (Compuertas logicas)
     'BIT_NOT',
     'BIT_AND',
     'BIT_OR',
@@ -63,13 +66,13 @@ reserved = {
     'next':'NEXT',
     'continue':'CONTINUE',
     'return':'RETURN',
-    'lt' : 'LT',
-    'gt' : 'GT',
-    'le' : 'LE',
-    'ge' : 'GE',
-    'eq' : 'EQ',
-    'ne' : 'NE',
-    'cmp' : 'CMP',
+    'lt' : 'LESS_STRING',
+    'gt' : 'GREATER_STRING',
+    'le' : 'LESSEQUAL_STRING',
+    'ge' : 'GREATEREQUAL_STRING',
+    'eq' : 'ISEQUAL_STRING',
+    'ne' : 'NOTEQUAL_STRING',
+    'cmp' : 'COMP_STRING',
 
     #Palabras reservadas (Declaraciones)
     'my':'MY',
@@ -81,7 +84,8 @@ reserved = {
     'use':'USE',
     'package':'PACKAGE',
     'struct' : 'STRUCT',
-    'do':'DO'
+    'Class' : 'CLASS',
+    'new' : 'NEW',
 }
 
 # Lista de tokens
@@ -103,9 +107,8 @@ tokens = operators + identifiers + datatypes + tuple(reserved.values()) + (
     'AMPERSANT',
     'HASHTAG',
     'DOT',
-    'DOUBLEDOT',
-    'TRIPLEDOT',
     'UNDERSCORE',
+    'NAME',
     'SUBROUTINE_ID'
 )
 
@@ -187,13 +190,13 @@ def t_DO(t):
 #Reglas (Operadores)
 t_PLUS   = r'\+'
 
-def t_PLUSPLUS(t):
+def t_INCREASE(t):
     r'\+\+'
     return t
 
 t_MINUS  = r'-'
 
-def t_MINUSMINUS(t):
+def t_DECREASE(t):
     r'--'
     return t
 
@@ -224,9 +227,9 @@ t_MINUS_ASSIGN = r'-='
 t_MULTIPLY_ASSIGN = r'\*='
 t_DIVIDE_ASSIGN = r'/='
 t_MOD_ASSIGN = r'%='
-t_EXPONENT_ASSIGN = r'\*\*='
+t_POW_ASSIGN = r'\*\*='
 
-def t_DEQUAL(t):
+def t_NOTEQUAL(t):
     r'!='
     return t
 
@@ -274,14 +277,6 @@ t_AMPERSANT = r'\&'
 t_HASHTAG = r'\#'
 t_DOT = r'\.'
 
-def t_DOUBLEDOT(t):
-    r'\.{2}'
-    return t
-
-def t_TRIPLEDOT(t):
-    r'\.{3}'
-    return t
-
 t_UNDERSCORE = r'\_'
 
 def t_RETURN(t):
@@ -289,21 +284,21 @@ def t_RETURN(t):
 	return t
 
 def t_SCALAR_ID(t):
-    r'\$[a-zA-Z0-9_]+'
+    r'\$[a-zA-Z0-9_#!<?@]+'
     return t
 
 def t_ARRAY_ID(t):
-    r'@[a-zA-Z0-9_]+'
+    r'@[a-zA-Z0-9_#!<?]+'
     return t
 
 def t_HASH_ID(t):
-    r'%[a-zA-Z][a-zA-Z0-9_]*'
+    r'%[a-zA-Z][a-zA-Z0-9_#!<?@]*'
     return t
 
-t_STRING = r'(\'([^\'])*\')|(\"([^\"])*\")'
+t_STRING = r'(\'[^\']*\')|(\"[^\"]*\")'
 t_HEX = r'0[xX][0-9a-fA-F]+'
 t_INTEGER = r'0|([1-9][0-9]*)'
-t_RANGE = r'\.\.'
+t_RANGE = r'\.\.(\.)?'
 
 def t_newline(t):
     r'\n+'
