@@ -20,42 +20,45 @@ def p_declaration_list_2(p):
 def p_declaration(p):
 	'''declaration : var_declaration
 				  | fun_declaration
-				  | header_declaration'''
+                  | import'''
 	pass
 
-def p_header_declaration_1(p):
-	'header_declaration : HASHTAG DEFINE ID NUMBER'
+def p_import(p):
+    '''import : USE ID SEMICOLON
+                | PACKAGE ID SEMICOLON'''
+    pass
+
+'''
+    Las declaraciones pueden ser:
+    my $var;
+    my $var = 5;
+    my($var);
+    my($var)=5;
+    my($var1,$var2);
+    my($var1,$var2) = (1,2)
+    my($var1,$var2) = ID(32)
+    my($var1,$var2) = ID(32,13,1231)
+
+'''
+
+def p_var_declaration(p):
+	'''var_declaration : MY declaration
+                        | MY LPAREN declaration RPAREN SEMICOLON
+                        | MY LPAREN param_list RPAREN SEMICOLON'''
 	pass
 
-def p_header_declaration_2(p):
-	'header_declaration : HASHTAG INCLUDE ID DOT ID'
-	pass
+def p_declaration(o):
+    '''declaration : scalar_declaration
+                    | scalar_assignment
+                    | array_declaration
+                    | array_assignment '''
+    pass
 
-def p_var_declaration_1(p):
-	'var_declaration : type_specifier var_declaration2 SEMICOLON'
-	pass
-
-def p_var_declaration_2(p):
-	'var_declaration : type_specifier ID LBRACKET NUMBER RBRACKET SEMICOLON'
-	pass
-
-def p_var_declaration_3(p):
-	'''var_declaration2 : ID COMMA var_declaration2
-	                               | ID
-	                               | ID EQUAL NUMBER COMMA var_declaration2
-	                               | ID EQUAL NUMBER
-	                               | TIMES ID COMMA var_declaration2
-	                               | TIMES ID
-	                               | ID EQUAL ID COMMA var_declaration2
-	                               | ID EQUAL ID
-	                               | COMMA
-	                               | TIMES TIMES ID
-	                               | TIMES TIMES ID COMMA var_declaration2
-	                               | AMPERSANT ID
-	                               | AMPERSANT ID COMMA var_declaration2
-
-        '''
-	pass
+def p_var_type(p):
+    '''var_type : DOLLAR ID
+                | AT ID
+                | PERCENT ID'''
+    pass
 
 def p_type_specifier_1(p):
 	'type_specifier : INT'

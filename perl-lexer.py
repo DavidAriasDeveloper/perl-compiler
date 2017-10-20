@@ -41,9 +41,9 @@ operators = (
 
 identifiers = (
     #Otros
-    'SCALAR_ID',
-    'ARRAY_ID',
-    'HASH_ID'
+    'DOLLAR',
+    'AT',
+    'PERCENT'
 )
 
 datatypes = (
@@ -108,14 +108,13 @@ tokens = operators + identifiers + datatypes + tuple(reserved.values()) + (
     'HASHTAG',
     'DOT',
     'UNDERSCORE',
-    'NAME',
-    'SUBROUTINE_ID'
+    'ID'
 )
 
 def t_KEYWORD(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     if t.value not in reserved:
-        t.type = 'SUBROUTINE_ID'
+        t.type = 'ID'
         return t
     t.type = reserved.get(t.value,'STRING')
     return t
@@ -283,16 +282,12 @@ def t_RETURN(t):
 	r'return'
 	return t
 
-def t_SCALAR_ID(t):
-    r'\$[a-zA-Z0-9_#!<?@]+'
-    return t
+t_DOLLAR = r'\$'
+t_AT = r'@'
+t_PERCENT = r'%'
 
-def t_ARRAY_ID(t):
-    r'@[a-zA-Z0-9_#!<?]+'
-    return t
-
-def t_HASH_ID(t):
-    r'%[a-zA-Z][a-zA-Z0-9_#!<?@]*'
+def ID(t):
+    r'[a-zA-Z0-9_#!<?]+'
     return t
 
 t_STRING = r'(\'[^\']*\')|(\"[^\"]*\")'
