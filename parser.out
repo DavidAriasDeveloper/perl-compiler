@@ -1,0 +1,286 @@
+Created by PLY version 3.10 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    INCREASE
+    DECREASE
+    POW
+    MODULUS
+    NOTEQUAL
+    COMP
+    BIT_NOT
+    BIT_AND
+    BIT_OR
+    BIT_XOR
+    BIT_COMPLEMENT
+    BIT_LEFT_SHIFT
+    BIT_RIGHT_SHIFT
+    RANGE
+    ELSIF
+    UNTIL
+    FOREACH
+    LAST
+    NEXT
+    CONTINUE
+    LESS_STRING
+    GREATER_STRING
+    LESSEQUAL_STRING
+    GREATEREQUAL_STRING
+    ISEQUAL_STRING
+    NOTEQUAL_STRING
+    COMP_STRING
+    UNDEF
+    UNLESS
+    STRUCT
+    CLASS
+    NEW
+    ARROW
+    DOUBLECOLON
+    QUESTION
+    HASHTAG
+    DOT
+    UNDERSCORE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> declaration_list
+Rule 2     declaration_list -> declaration_list declaration
+Rule 3     declaration_list -> declaration
+Rule 4     declaration -> var_declaration
+Rule 5     declaration -> fun_declaration
+Rule 6     declaration -> import
+Rule 7     import -> USE ID SEMICOLON
+Rule 8     import -> PACKAGE ID SEMICOLON
+Rule 9     var_declaration -> MY var_type SEMICOLON
+Rule 10    var_declaration -> MY var_type assign_type data_type SEMICOLON
+Rule 11    var_declaration -> MY var_type assign_type array_items SEMICOLON
+Rule 12    var_declaration -> MY var_type assign_type hash_items SEMICOLON
+Rule 13    var_declaration -> MY LPAREN var_type RPAREN SEMICOLON
+Rule 14    var_declaration -> MY LPAREN var_type RPAREN assign_type data_type SEMICOLON
+Rule 15    var_declaration -> MY LPAREN var_type RPAREN assign_type array_items SEMICOLON
+Rule 16    var_declaration -> MY LPAREN var_type RPAREN assign_type hash_items SEMICOLON
+Rule 17    var_declaration -> MY LPAREN param_list RPAREN SEMICOLON
+Rule 18    var_declaration -> MY LPAREN param_list RPAREN assign_type data_type SEMICOLON
+Rule 19    var_declaration -> MY LPAREN param_list RPAREN assign_type array_items SEMICOLON
+Rule 20    var_declaration -> MY LPAREN param_list RPAREN assign_type hash_items SEMICOLON
+Rule 21    var_type -> DOLLAR ID
+Rule 22    var_type -> AT ID
+Rule 23    var_type -> PERCENT ID
+Rule 24    assign_type -> ASSIGN
+Rule 25    assign_type -> PLUS_ASSIGN
+Rule 26    assign_type -> MINUS_ASSIGN
+Rule 27    assign_type -> MULTIPLY_ASSIGN
+Rule 28    assign_type -> DIVIDE_ASSIGN
+Rule 29    assign_type -> MOD_ASSIGN
+Rule 30    assign_type -> POW_ASSIGN
+Rule 31    data_type -> INTEGER
+Rule 32    data_type -> HEX
+Rule 33    data_type -> FLOAT
+Rule 34    data_type -> STRING
+Rule 35    array_items -> LPAREN param_list RPAREN
+Rule 36    hash_items -> LPAREN hash_list RPAREN
+Rule 37    fun_declaration -> SUB ID LPAREN params RPAREN compount_stmt
+Rule 38    params -> param_list
+Rule 39    params -> VOID
+Rule 40    param_list -> param_list COMMA param
+Rule 41    param_list -> param
+Rule 42    hash_list -> hash_list GROSSARROW param
+Rule 43    hash_list -> param
+Rule 44    param -> datatype
+Rule 45    param -> var_type
+Rule 46    param -> ID LBRACKET INTEGER RBRACKET
+Rule 47    compount_stmt -> LBLOCK local_declarations statement_list RBLOCK
+Rule 48    local_declarations -> local_declarations var_declaration
+Rule 49    local_declarations -> empty
+Rule 50    statement_list -> statement_list statement
+Rule 51    statement_list -> empty
+Rule 52    statement -> expression_stmt
+Rule 53    statement -> compount_stmt
+Rule 54    statement -> selection_stmt
+Rule 55    statement -> iteration_stmt
+Rule 56    statement -> return_stmt
+Rule 57    expression_stmt -> expression SEMICOLON
+Rule 58    expression_stmt -> SEMICOLON
+Rule 59    selection_stmt -> IF LPAREN expression RPAREN statement
+Rule 60    selection_stmt -> IF LPAREN expression RPAREN statement ELSE statement
+Rule 61    selection_stmt -> SWITCH LPAREN var RPAREN statement
+Rule 62    selection_stmt -> CASE NUMBER COLON statement BREAK SEMICOLON
+Rule 63    selection_stmt -> DEFAULT COLON statement BREAK SEMICOLON
+Rule 64    iteration_stmt -> WHILE LPAREN expression RPAREN statement
+Rule 65    iteration_stmt -> FOR LPAREN var_declaration2 SEMICOLON expression SEMICOLON additive_expression RPAREN statement
+Rule 66    return_stmt -> RETURN SEMICOLON
+Rule 67    return_stmt -> RETURN expression SEMICOLON
+Rule 68    expression -> var EQUAL expression
+Rule 69    expression -> simple_expression
+Rule 70    expression -> var EQUAL AMPERSANT ID
+Rule 71    var -> ID
+Rule 72    var -> ID LBRACKET expression RBRACKET
+Rule 73    simple_expression -> additive_expression relop additive_expression
+Rule 74    simple_expression -> additive_expression
+Rule 75    relop -> LESS
+Rule 76    relop -> LESSEQUAL
+Rule 77    relop -> GREATER
+Rule 78    relop -> GREATEREQUAL
+Rule 79    relop -> DEQUAL
+Rule 80    relop -> DISTINT
+Rule 81    relop -> ISEQUAL
+Rule 82    additive_expression -> additive_expression addop term
+Rule 83    additive_expression -> term
+Rule 84    additive_expression -> term MINUSMINUS
+Rule 85    additive_expression -> term PLUSPLUS
+Rule 86    addop -> PLUS
+Rule 87    addop -> MINUS
+Rule 88    term -> term mulop factor
+Rule 89    term -> factor
+Rule 90    mulop -> TIMES
+Rule 91    mulop -> DIVIDE
+Rule 92    factor -> LPAREN expression RPAREN
+Rule 93    factor -> var
+Rule 94    factor -> call
+Rule 95    factor -> NUMBER
+Rule 96    call -> ID LPAREN args RPAREN
+Rule 97    args -> args_list
+Rule 98    args -> empty
+Rule 99    args_list -> args_list COMMA expression
+Rule 100   args_list -> expression
+Rule 101   empty -> <empty>
+
+Terminals, with rules where they appear
+
+AMPERSANT            : 70
+ARROW                : 
+ASSIGN               : 24
+AT                   : 22
+BIT_AND              : 
+BIT_COMPLEMENT       : 
+BIT_LEFT_SHIFT       : 
+BIT_NOT              : 
+BIT_OR               : 
+BIT_RIGHT_SHIFT      : 
+BIT_XOR              : 
+CLASS                : 
+COLON                : 62 63
+COMMA                : 40 99
+COMP                 : 
+COMP_STRING          : 
+CONTINUE             : 
+DECREASE             : 
+DISTINT              : 80
+DIVIDE               : 91
+DIVIDE_ASSIGN        : 28
+DOLLAR               : 21
+DOT                  : 
+DOUBLECOLON          : 
+ELSE                 : 60
+ELSIF                : 
+FLOAT                : 33
+FOR                  : 65
+FOREACH              : 
+GREATER              : 77
+GREATEREQUAL         : 78
+GREATEREQUAL_STRING  : 
+GREATER_STRING       : 
+GROSSARROW           : 42
+HASHTAG              : 
+HEX                  : 32
+ID                   : 7 8 21 22 23 37 46 70 71 72 96
+IF                   : 59 60
+INCREASE             : 
+INTEGER              : 31 46
+ISEQUAL              : 81
+ISEQUAL_STRING       : 
+LAST                 : 
+LBLOCK               : 47
+LBRACKET             : 46 72
+LESS                 : 75
+LESSEQUAL            : 76
+LESSEQUAL_STRING     : 
+LESS_STRING          : 
+LPAREN               : 13 14 15 16 17 18 19 20 35 36 37 59 60 61 64 65 92 96
+MINUS                : 87
+MINUS_ASSIGN         : 26
+MODULUS              : 
+MOD_ASSIGN           : 29
+MULTIPLY_ASSIGN      : 27
+MY                   : 9 10 11 12 13 14 15 16 17 18 19 20
+NEW                  : 
+NEXT                 : 
+NOTEQUAL             : 
+NOTEQUAL_STRING      : 
+PACKAGE              : 8
+PERCENT              : 23
+PLUS                 : 86
+PLUS_ASSIGN          : 25
+POW                  : 
+POW_ASSIGN           : 30
+QUESTION             : 
+RANGE                : 
+RBLOCK               : 47
+RBRACKET             : 46 72
+RETURN               : 66 67
+RPAREN               : 13 14 15 16 17 18 19 20 35 36 37 59 60 61 64 65 92 96
+SEMICOLON            : 7 8 9 10 11 12 13 14 15 16 17 18 19 20 57 58 62 63 65 65 66 67
+STRING               : 34
+STRUCT               : 
+SUB                  : 37
+TIMES                : 90
+UNDEF                : 
+UNDERSCORE           : 
+UNLESS               : 
+UNTIL                : 
+USE                  : 7
+WHILE                : 64
+error                : 
+
+Nonterminals, with rules where they appear
+
+BREAK                : 62 63
+CASE                 : 62
+DEFAULT              : 63
+DEQUAL               : 79
+EQUAL                : 68 70
+MINUSMINUS           : 84
+NUMBER               : 62 95
+PLUSPLUS             : 85
+SWITCH               : 61
+VOID                 : 39
+additive_expression  : 65 73 73 74 82
+addop                : 82
+args                 : 96
+args_list            : 97 99
+array_items          : 11 15 19
+assign_type          : 10 11 12 14 15 16 18 19 20
+call                 : 94
+compount_stmt        : 37 53
+data_type            : 10 14 18
+datatype             : 44
+declaration          : 2 3
+declaration_list     : 1 2
+empty                : 49 51 98
+expression           : 57 59 60 64 65 67 68 72 92 99 100
+expression_stmt      : 52
+factor               : 88 89
+fun_declaration      : 5
+hash_items           : 12 16 20
+hash_list            : 36 42
+import               : 6
+iteration_stmt       : 55
+local_declarations   : 47 48
+mulop                : 88
+param                : 40 41 42 43
+param_list           : 17 18 19 20 35 38 40
+params               : 37
+program              : 0
+relop                : 73
+return_stmt          : 56
+selection_stmt       : 54
+simple_expression    : 69
+statement            : 50 59 60 60 61 62 63 64 65
+statement_list       : 47 50
+term                 : 82 83 84 85 88
+var                  : 61 68 70 93
+var_declaration      : 4 48
+var_declaration2     : 65
+var_type             : 9 10 11 12 13 14 15 16 45
+

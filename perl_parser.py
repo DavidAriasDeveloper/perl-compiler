@@ -1,6 +1,6 @@
 import ply.yacc as yacc
-from minic_lexer import tokens
-import minic_lexer
+from perl_lexer import tokens
+import perl_lexer
 import sys
 
 VERBOSE = 1
@@ -42,17 +42,19 @@ def p_import(p):
 '''
 
 def p_var_declaration(p):
-	'''var_declaration : MY declaration
-                        | MY LPAREN declaration RPAREN SEMICOLON
-                        | MY LPAREN param_list RPAREN SEMICOLON'''
+	'''var_declaration : MY var_type SEMICOLON
+						| MY var_type assign_type data_type SEMICOLON
+						| MY var_type assign_type array_items SEMICOLON
+						| MY var_type assign_type hash_items SEMICOLON
+						| MY LPAREN var_type RPAREN SEMICOLON
+						| MY LPAREN var_type RPAREN assign_type data_type SEMICOLON
+						| MY LPAREN var_type RPAREN assign_type array_items SEMICOLON
+						| MY LPAREN var_type RPAREN assign_type hash_items SEMICOLON
+                        | MY LPAREN param_list RPAREN SEMICOLON
+						| MY LPAREN param_list RPAREN assign_type data_type SEMICOLON
+						| MY LPAREN param_list RPAREN assign_type array_items SEMICOLON
+						| MY LPAREN param_list RPAREN assign_type hash_items SEMICOLON'''
 	pass
-
-def p_declaration(o):
-    '''declaration : scalar_declaration
-                    | scalar_assignment
-                    | array_declaration
-                    | array_assignment '''
-    pass
 
 def p_var_type(p):
     '''var_type : DOLLAR ID
@@ -60,40 +62,33 @@ def p_var_type(p):
                 | PERCENT ID'''
     pass
 
-def p_type_specifier_1(p):
-	'type_specifier : INT'
+def p_assign_type(p):
+    '''assign_type : ASSIGN
+                | PLUS_ASSIGN
+                | MINUS_ASSIGN
+				| MULTIPLY_ASSIGN
+				| DIVIDE_ASSIGN
+				| MOD_ASSIGN
+				| POW_ASSIGN'''
+    pass
+
+def p_data_type(p):
+	'''data_type : 	INTEGER
+				|	HEX
+				|	FLOAT
+				|	STRING'''
 	pass
 
-def p_type_specifier_2(p):
-	'type_specifier : VOID'
+def p_array_items(p):
+	'''array_items :	LPAREN param_list RPAREN'''
 	pass
 
-def p_type_specifier_3(p):
-	'type_specifier : LONG'
-	pass
-
-def p_type_specifier_4(p):
-	'type_specifier : SHORT'
-	pass
-
-def p_type_specifier_5(p):
-	'type_specifier : DOUBLE'
-	pass
-
-def p_type_specifier_6(p):
-	'type_specifier : FLOAT'
-	pass
-
-def p_type_specifier_7(p):
-	'type_specifier : CHAR'
-	pass
-
-def p_type_specifier_8(p):
-	'type_specifier : BOOLEAN'
+def p_hash_items(p):
+	'''hash_items :		LPAREN hash_list RPAREN'''
 	pass
 
 def p_fun_declaration(p):
-	'fun_declaration : type_specifier ID LPAREN params RPAREN compount_stmt'
+	'fun_declaration : SUB ID LPAREN params RPAREN compount_stmt'
 	pass
 
 def p_params_1(p):
@@ -112,17 +107,27 @@ def p_param_list_2(p):
 	'param_list : param'
 	pass
 
-def p_param_list_3(p):
-	'param_list : empty'
+def p_hash_list_1(p):
+	'hash_list : hash_list GROSSARROW param'
+	pass
+
+def p_hash_list_2(p):
+	'hash_list : param'
 	pass
 
 def p_param_1(p):
-	'param : type_specifier ID'
+	'param : datatype'
 	pass
 
 def p_param_2(p):
-	'param : type_specifier ID LBRACKET RBRACKET'
+	'param : var_type'
 	pass
+
+def p_param_3(p):
+	'param : ID LBRACKET INTEGER RBRACKET'
+	pass
+
+
 
 def p_compount_stmt(p):
 	'compount_stmt : LBLOCK local_declarations statement_list RBLOCK'

@@ -49,6 +49,7 @@ identifiers = (
 datatypes = (
     'STRING',
     'INTEGER',
+    'FLOAT',
     'HEX',
     'RANGE'
 )
@@ -292,7 +293,8 @@ def ID(t):
 
 t_STRING = r'(\'[^\']*\')|(\"[^\"]*\")'
 t_HEX = r'0[xX][0-9a-fA-F]+'
-t_INTEGER = r'0|([1-9][0-9]*)'
+t_INTEGER = r'[-+]?([1-9][0-9]*)'
+t_FLOAT = r'[-+]?([0-9]*\.[0-9]+|[0-9]+)'
 t_RANGE = r'\.\.(\.)?'
 
 def t_newline(t):
