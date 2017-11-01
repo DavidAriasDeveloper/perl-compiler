@@ -4,11 +4,8 @@ import sys
 operators = (
     #Simbolos (Operadores)
     'PLUS',
-    'INCREASE',
     'MINUS',
-    'DECREASE',
     'TIMES',
-    'POW',
     'MODULUS',
     'DIVIDE',
     'LESS',
@@ -17,7 +14,6 @@ operators = (
     'GREATEREQUAL',
     'NOTEQUAL',
     'ISEQUAL',
-    'DISTINT',
     'COMP',
 
     #Simbolos (Asignaciones)
@@ -28,15 +24,6 @@ operators = (
     'DIVIDE_ASSIGN',
     'MOD_ASSIGN',
     'POW_ASSIGN',
-
-    #Simbolos (Compuertas logicas)
-    'BIT_NOT',
-    'BIT_AND',
-    'BIT_OR',
-    'BIT_XOR',
-    'BIT_COMPLEMENT',
-    'BIT_LEFT_SHIFT',
-    'BIT_RIGHT_SHIFT',
 )
 
 identifiers = (
@@ -51,13 +38,12 @@ datatypes = (
     'INTEGER',
     'FLOAT',
     'HEX',
-    'RANGE'
 )
 
 reserved = {
     # Palabras reservadas (Estructuras de control)
     'if':'IF',
-    'elsif':'ELSIF',
+    'print':'PRINT',
     'else':'ELSE',
     'while':'WHILE',
     'until':'UNTIL',
@@ -80,19 +66,13 @@ reserved = {
     'sub':'SUB',
 
     #Palabras reservadas (Prefijos)
-    'undef':'UNDEF',
-    'unless':'UNLESS',
     'use':'USE',
     'package':'PACKAGE',
-    'struct' : 'STRUCT',
-    'Class' : 'CLASS',
-    'new' : 'NEW',
 }
 
 # Lista de tokens
 tokens = operators + identifiers + datatypes + tuple(reserved.values()) + (
     #Simbolos de sintaxis
-    'ARROW',
     'GROSSARROW',
     'SEMICOLON',
     'COMMA',
@@ -102,13 +82,7 @@ tokens = operators + identifiers + datatypes + tuple(reserved.values()) + (
     'RBRACKET',
     'LBLOCK',
     'RBLOCK',
-    'COLON',
-    'DOUBLECOLON',
-    'QUESTION',
     'AMPERSANT',
-    'HASHTAG',
-    'DOT',
-    'UNDERSCORE',
     'ID'
 )
 
@@ -125,8 +99,8 @@ def t_IF(t):
     r'if'
     return t
 
-def t_ELSIF(t):
-    r'elsif'
+def t_PRINT(t):
+    f'print'
     return t
 
 def t_ELSE(t):
@@ -171,13 +145,6 @@ def t_SUB(t):
     return t
 
 #Reglas (Prefijos)
-def t_UNDEF(t):
-    r'undef'
-    return t
-
-def t_UNLESS(t):
-    r'unless'
-    return t
 
 def t_PACKAGE(t):
     r'package'
@@ -190,21 +157,9 @@ def t_DO(t):
 #Reglas (Operadores)
 t_PLUS   = r'\+'
 
-def t_INCREASE(t):
-    r'\+\+'
-    return t
-
 t_MINUS  = r'-'
 
-def t_DECREASE(t):
-    r'--'
-    return t
-
 t_TIMES  = r'\*'
-
-def t_POW(t):
-    r'\*\*'
-    return t
 
 t_DIVIDE = r'/'
 t_LESS   = r'<'
@@ -241,18 +196,6 @@ def t_COMP(t):
     r'<=>'
     return t
 
-t_BIT_NOT = r'!'
-t_BIT_AND = r'&'
-t_BIT_OR = r'\|'
-t_BIT_XOR = r'\^'
-t_BIT_COMPLEMENT = r'~'
-t_BIT_LEFT_SHIFT = r'<<'
-t_BIT_RIGHT_SHIFT = r'>>'
-
-#Reglas (Sintaxis)
-def t_ARROW(t):
-    r'\->'
-    return t
 
 def t_GROSSARROW(t):
     r'\=>'
@@ -266,18 +209,10 @@ t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_LBLOCK   = r'{'
 t_RBLOCK   = r'}'
-t_COLON   = r':'
 
-def t_DOUBLECOLON(t):
-    r'::'
-    return t
 
-t_QUESTION = r'\?'
 t_AMPERSANT = r'\&'
-t_HASHTAG = r'\#'
-t_DOT = r'\.'
 
-t_UNDERSCORE = r'\_'
 
 def t_RETURN(t):
 	r'return'
@@ -295,7 +230,6 @@ t_STRING = r'(\'[^\']*\')|(\"[^\"]*\")'
 t_HEX = r'0[xX][0-9a-fA-F]+'
 t_INTEGER = r'[-+]?([1-9][0-9]*)'
 t_FLOAT = r'[-+]?([0-9]*\.[0-9]+|[0-9]+)'
-t_RANGE = r'\.\.(\.)?'
 
 def t_newline(t):
     r'\n+'
