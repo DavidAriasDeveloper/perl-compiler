@@ -12,7 +12,7 @@ use strict;
 # functions of a fixed number of arguments.
 # (The perl x operator will do this.)
 #
-sub redun
+sub redun()
 {
     # This is like a parameter list.
     my($rptct, $str) = @_;
@@ -33,7 +33,7 @@ sub redun
 # of them all.  This uses the array of arguments
 # as an array to produce a variadic function.
 #
-sub glueem
+sub glueem()
 {
     my($result) = "";
     my($arg);
@@ -52,11 +52,11 @@ sub glueem
 # returns (0, errmsg).  Returning a list is really
 # a way of having more than one return value.
 #
-sub readall
+sub readall()
 {
     my($fn) = @_;
 
-    open(IN, $fn) or return (0, $!);
+    #open(IN, $fn) or return (0, $!);
 
     my($line);
     my($result) = "";
@@ -72,7 +72,7 @@ sub readall
 # and returns the new list.  There is a builtin
 # function reverse which already does this.
 #
-sub rev
+sub rev()
 {
     my(@arr) = @_;
     my($low, $hi) = (0, $#_);
