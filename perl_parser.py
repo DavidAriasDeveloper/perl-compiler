@@ -49,12 +49,10 @@ def p_declaration_function(p):
 	"""
 	pass
 
-def p_declaration_var(p):
+def p_declaration_statement(p):
 	"""
-	declaration : MY var_type SEMICOLON
-				| MY var_type assign_type expression SEMICOLON
-				| MY LPAREN param_list RPAREN SEMICOLON
-				| MY LPAREN param_list RPAREN assign_type expression SEMICOLON
+	declaration : statement SEMICOLON
+				| command
 	"""
 	pass
 
@@ -110,15 +108,55 @@ def p_statement_list_empty(p):
 	"""
 	pass
 
-def p_statement_if(p):
+def p_statement_list_command(p):
 	"""
-	statement : IF LPAREN relop RPAREN LBLOCK statement_list RBLOCK
+	statement_list : statement_list command
+					| command
 	"""
 	pass
 
-def p_statement_if_else(p):
+def p_statement_var(p):
 	"""
-	statement : IF LPAREN relop RPAREN LBLOCK statement_list RBLOCK ELSE LBLOCK statement_list RBLOCK
+	statement : var_declaration
+			|	var_assignment
+	"""
+	pass
+
+def p_statement_var_declaration(p):
+	"""
+	var_declaration : MY var_type
+				| MY var_type assign_type expression
+				| MY LPAREN param_list RPAREN
+				| MY LPAREN param_list RPAREN assign_type expression
+				| MY var_type assign_type LPAREN expression_list RPAREN
+				| MY LPAREN param_list RPAREN assign_type LPAREN expression_list RPAREN
+	"""
+	pass
+
+def p_statement_var_assignment(p):
+	"""
+	var_assignment : var_type assign_type expression
+			|	var_type LBRACKET expression RBRACKET assign_type expression
+			|	var_type assign_type LPAREN expression_list RPAREN
+			|	LPAREN param_list RPAREN assign_type LPAREN expression_list RPAREN
+	"""
+	pass
+
+def p_statement_return(p):
+	"""
+	statement : RETURN LPAREN expression_list RPAREN
+	"""
+	pass
+
+def p_command_if(p):
+	"""
+	command : IF LPAREN relop RPAREN LBLOCK statement_list RBLOCK
+	"""
+	pass
+
+def p_command_if_else(p):
+	"""
+	command : IF LPAREN relop RPAREN LBLOCK statement_list RBLOCK ELSE LBLOCK statement_list RBLOCK
 	"""
 	pass
 
@@ -128,47 +166,39 @@ def p_statement_print(p):
 	"""
 	pass
 
-def p_statement_while(p):
+def p_command_while(p):
 	"""
-	statement : WHILE LPAREN relop RPAREN LBLOCK statement_list RBLOCK
+	command : WHILE LPAREN relop RPAREN LBLOCK statement_list RBLOCK
+	"""
+	pass
+
+def p_command_for(p):
+	"""
+	command : FOR LPAREN var_declaration SEMICOLON relop SEMICOLON var_assignment RPAREN LBLOCK statement_list RBLOCK
+			| FOR LPAREN var_assignment SEMICOLON relop SEMICOLON var_assignment RPAREN LBLOCK statement_list RBLOCK
+	"""
+	pass
+
+def p_statement_call(p):
+	"""
+	statement :  ID LPAREN expression_list RPAREN
+			|	AMPERSANT ID LPAREN expression_list RPAREN
 	"""
 	pass
 
 def p_expression_list(p):
 	"""
-	expression_list : expression_listitems comma_expression
-	"""
-	pass
-
-def p_expression_list_comma_expression(p):
-	"""
-	expression_list : comma_expression
-	"""
-	pass
-
-def p_expression_list_empty(p):
-	"""
-	expression_list : empty
-	"""
-	pass
-
-def p_expression_listitems(p):
-	"""
-	expression_listitems : expression_listitems comma_expression
-	"""
-	pass
-
-def p_expression_listitems_expr(p):
-	"""
-	expression_listitems : expression
+	expression_list : expression comma_expression
+			   | empty
 	"""
 	pass
 
 def p_comma_expression(p):
 	"""
-	comma_expression : COMMA expression
+	comma_expression : comma_expression COMMA expression
+				   | COMMA expression
+				   | empty
 	"""
-	pass
 
 def p_expression(p):
 	"""
@@ -200,6 +230,13 @@ def p_call_expression(p):
 	expression : ID LPAREN expression_list RPAREN %prec UMINUS
 	"""
 
+def p_expression_array_access(p):
+	"""
+	expression : DOLLAR ID LBRACKET expression RBRACKET
+	"""
+	pass
+
+
 def p_var_type_expression(p):
 	"""
 	expression : var_type
@@ -226,25 +263,33 @@ def p_relop(p):
 
 def p_relop_number(p):
 	"""
-	relop_number :	ISEQUAL
-				|	NOTEQUAL
-				|	GREATER
-				|	GREATEREQUAL
-				|	LESS
-				|	LESSEQUAL
-				|	COMP
+	relop_number :	expression ISEQUAL expression
+				|	expression NOTEQUAL expression
+				|	expression GREATER expression
+				|	expression GREATEREQUAL expression
+				|	expression LESS expression
+				|	expression LESSEQUAL expression
+				|	expression COMP expression
+	"""
+	pass
+
+def p_relop_binary(p):
+	"""
+	relop : relop AND relop
+		|	relop OR relop
+		|	NOT relop
 	"""
 	pass
 
 def p_relop_string(p):
 	"""
-	relop_string :	ISEQUAL_STRING
-				|	NOTEQUAL_STRING
-				|	GREATER_STRING
-				|	GREATEREQUAL_STRING
-				|	LESS_STRING
-				|	LESSEQUAL_STRING
-				|	COMP_STRING
+	relop_string :	 expression ISEQUAL_STRING expression
+				|	 expression NOTEQUAL_STRING expression
+				|	 expression GREATER_STRING expression
+				|	 expression GREATEREQUAL_STRING expression
+				|	 expression LESS_STRING expression
+				|	 expression LESSEQUAL_STRING expression
+				|	 expression COMP_STRING expression
 	"""
 	pass
 

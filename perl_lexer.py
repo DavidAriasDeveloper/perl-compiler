@@ -49,12 +49,7 @@ reserved = {
     'print':'PRINT',
     'else':'ELSE',
     'while':'WHILE',
-    'until':'UNTIL',
     'for':'FOR',
-    'foreach':'FOREACH',
-    'last':'LAST',
-    'next':'NEXT',
-    'continue':'CONTINUE',
     'return':'RETURN',
     'lt' : 'LESS_STRING',
     'gt' : 'GREATER_STRING',
@@ -76,7 +71,6 @@ reserved = {
 # Lista de tokens
 tokens = operators + identifiers + datatypes + tuple(reserved.values()) + (
     #Simbolos de sintaxis
-    'GROSSARROW',
     'SEMICOLON',
     'COMMA',
     'LPAREN',
@@ -114,28 +108,8 @@ def t_WHILE(t):
     r'while'
     return t
 
-def t_UNTIL(t):
-    r'until'
-    return t
-
 def t_FOR(t):
     r'for'
-    return t
-
-def t_FOREACH(t):
-    r'foreach'
-    return t
-
-def t_LAST(t):
-    r'last'
-    return t
-
-def t_NEXT(t):
-    r'next'
-    return t
-
-def t_CONTINUE(t):
-    r'continue'
     return t
 
 #Reglas (Declaraciones)
@@ -201,11 +175,6 @@ def t_ISEQUAL(t):
 
 def t_COMP(t):
     r'<=>'
-    return t
-
-
-def t_GROSSARROW(t):
-    r'\=>'
     return t
 
 t_SEMICOLON = ';'
