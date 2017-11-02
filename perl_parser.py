@@ -7,6 +7,17 @@ import sys
 
 VERBOSE = 1
 
+precedence = (
+	('left','OR'),
+	('left','AND'),
+	('left','NOT'),
+	('left','LESS','LESSEQUAL','GREATER','GREATEREQUAL','ISEQUAL','NOTEQUAL'),
+	('left','LESS_STRING','LESSEQUAL_STRING','GREATER_STRING','GREATEREQUAL_STRING','ISEQUAL_STRING','NOTEQUAL_STRING'),
+	('left', 'PLUS', 'MINUS'),
+	('left', 'TIMES', 'DIVIDE'),
+	('right', 'UMINUS')
+)
+
 def p_program(p):
 	"""
 	program : declaration_list
@@ -42,8 +53,8 @@ def p_declaration_var(p):
 	"""
 	declaration : MY var_type SEMICOLON
 				| MY var_type assign_type expression SEMICOLON
-				| MY LPAREN var_list RPAREN SEMICOLON
-				| MY LPAREN var_list RPAREN assign_type expression SEMICOLON
+				| MY LPAREN param_list RPAREN SEMICOLON
+				| MY LPAREN param_list RPAREN assign_type expression SEMICOLON
 	"""
 	pass
 
@@ -121,6 +132,7 @@ def p_statement_while(p):
 	"""
 	statement : WHILE LPAREN relop RPAREN LBLOCK statement_list RBLOCK
 	"""
+	pass
 
 def p_expression_list(p):
 	"""
@@ -205,10 +217,40 @@ def p_expression_uminus_plus(p):
 	"""
 	pass
 
+def p_relop(p):
+	"""
+	relop : relop_number
+			|	relop_string
+	"""
+	pass
+
+def p_relop_number(p):
+	"""
+	relop_number :	ISEQUAL
+				|	NOTEQUAL
+				|	GREATER
+				|	GREATEREQUAL
+				|	LESS
+				|	LESSEQUAL
+				|	COMP
+	"""
+	pass
+
+def p_relop_string(p):
+	"""
+	relop_string :	ISEQUAL_STRING
+				|	NOTEQUAL_STRING
+				|	GREATER_STRING
+				|	GREATEREQUAL_STRING
+				|	LESS_STRING
+				|	LESSEQUAL_STRING
+				|	COMP_STRING
+	"""
+	pass
+
 def p_empty(p):
 	'empty :'
 	pass
-
 
 def p_error(p):
 	if VERBOSE:

@@ -15,6 +15,9 @@ operators = (
     'NOTEQUAL',
     'ISEQUAL',
     'COMP',
+    'OR',
+    'AND',
+    'NOT',
 
     #Simbolos (Asignaciones)
     'ASSIGN',
@@ -100,7 +103,7 @@ def t_IF(t):
     return t
 
 def t_PRINT(t):
-    f'print'
+    r'print'
     return t
 
 def t_ELSE(t):
@@ -175,6 +178,10 @@ t_GREATER = r'>'
 def t_GREATEREQUAL(t):
     r'>='
     return t
+
+t_OR = r'\|'
+t_AND = r'\&'
+t_NOT = r'!'
 
 t_ASSIGN  = r'='
 t_PLUS_ASSIGN = r'\+='
